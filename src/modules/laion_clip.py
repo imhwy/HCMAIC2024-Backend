@@ -9,9 +9,11 @@ from open_clip.factory import (create_model,
                                image_transform_v2,
                                get_tokenizer)
 
+
 class LaionCLIP:
     """
     """
+
     def __init__(
         self,
         model: create_model,
@@ -25,7 +27,7 @@ class LaionCLIP:
         self._processor = processor
         self._tokenizer = tokenizer
         self._device_type = device_type
-        
+
     def text_embedding(
         self,
         text: str
@@ -40,7 +42,7 @@ class LaionCLIP:
             text_features = self._model.encode_text(text)
             text_features = F.normalize(text_features, dim=-1)
         return text_features
-    
+
     def image_embedding(
         self,
         image
@@ -48,7 +50,7 @@ class LaionCLIP:
         """
         """
         image = Image.open(image).convert("RGB")
-        image = self._preprocess(image).unsqueeze(0).to(self._device_type)
+        image = self._processor(image).unsqueeze(0).to(self._device_type)
         with torch.no_grad(), torch.cuda.amp.autocast():
             image_features = self._model.encode_image(image)
             image_features = F.normalize(image_features, dim=-1)

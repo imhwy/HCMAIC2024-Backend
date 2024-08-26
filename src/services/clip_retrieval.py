@@ -5,7 +5,7 @@ Implements text retrieval using CLIP embeddings and FAISS index.
 from typing import List, Dict
 from src.modules.original_clip import OriginalCLIP
 from src.modules.apple_clip import AppleCLIP
-from src.modules.laion_clip import LaiionCLIP
+from src.modules.laion_clip import LaionCLIP
 from src.repositories.load_faiss import ClipFaiss
 
 
@@ -19,7 +19,7 @@ class ClipRetrieval:
         top_k: int,
         original_clip: OriginalCLIP,
         apple_clip: AppleCLIP,
-        laion_clip: LaiionCLIP,
+        laion_clip: LaionCLIP,
         faiss: ClipFaiss,
         data: Dict
     ) -> None:
@@ -67,7 +67,7 @@ class ClipRetrieval:
             indices=indices[0]
         )
         return result
-    
+
     async def apple_text_retrieval(
         self,
         text: str
@@ -115,7 +115,7 @@ class ClipRetrieval:
             query_vectors=vector_embedding
         )
         result = await self.mapping_results(
-            data=self._oc_data,
+            data=self._data,
             indices=indices[0]
         )
         return result
@@ -136,7 +136,7 @@ class ClipRetrieval:
             List[Dict]: A list of dictionaries containing the retrieval results.
         """
         if model_type == "original_clip":
-            return await self.oc_text_retrieval(text=text)
+            return await self.original_text_retrieval(text=text)
         elif model_type == "apple_clip":
             return await self.apple_text_retrieval(text=text)
         elif model_type == "laion_clip":

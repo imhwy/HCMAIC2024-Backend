@@ -40,7 +40,7 @@ class AppleCLIP:
             text_features = self._model.encode_text(text)
             text_features = F.normalize(text_features, dim=-1)
         return text_features
-    
+
     def image_embedding(
         self,
         image
@@ -48,7 +48,7 @@ class AppleCLIP:
         """
         """
         image = Image.open(image).convert("RGB")
-        image = self._preprocess(image).unsqueeze(0).to(self._device)
+        image = self._processor(image).unsqueeze(0).to(self._device_type)
         with torch.no_grad(), torch.cuda.amp.autocast():
             image_features = self._model.encode_image(image)
             image_features = F.normalize(image_features, dim=-1)
