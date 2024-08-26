@@ -73,10 +73,15 @@ class Service:
         self._oc_processor = CLIPProcessor.from_pretrained(original_clip_model)
         self._oc_tokenizer = AutoTokenizer.from_pretrained(original_clip_model)
         self._apple_model, self._apple_processor = create_model_from_pretrained(
-            apple_clip_model)
+            apple_clip_model
+        )
+        self._apple_model.to(self._device)
         self._apple_model = get_tokenizer(apple_clip_tokenizer)
         self._laion_model, self._laion_processor = create_model_from_pretrained(
-            laion_clip_model)
+            laion_clip_model
+        )
+        self._laion_modelbranch
+        .to(self._device)
         self._laion_tokenizer = get_tokenizer(laion_clip_tokenizer)
         self._original_clip = OriginalCLIP(
             model=self._oc_model,

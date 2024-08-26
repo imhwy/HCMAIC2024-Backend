@@ -17,8 +17,8 @@ class LoadJson:
         """
         """
         with open(json_url, "r", encoding="utf-8") as f:
-            self.mapping = json.load(f)
-        self.data = {
+            self._mapping = json.load(f)
+        self._data = {
             obj['indice']: {
                 'video_id': obj['video_id'],
                 'frame_id': obj['frame_id']
