@@ -2,14 +2,16 @@
 Implements text retrieval using CLIP embeddings and FAISS index.
 """
 
+from io import BytesIO
 from typing import List, Dict
+
 from src.modules.original_clip import OriginalCLIP
 from src.modules.apple_clip import AppleCLIP
 from src.modules.laion_clip import LaionCLIP
 from src.repositories.load_faiss import ClipFaiss
 
 
-class ClipRetrieval:
+class ImageClipRetrieval:
     """
     Handles retrieval of text data using CLIP embeddings and FAISS index.
     """
@@ -42,9 +44,9 @@ class ClipRetrieval:
         filtered_list = [data[indice] for indice in indices if indice in data]
         return filtered_list
 
-    async def original_text_retrieval(
+    async def original_image_retrieval(
         self,
-        text: str
+        image: BytesIO
     ) -> List[Dict]:
         """
         Retrieves text data using the original CLIP model.
@@ -55,8 +57,8 @@ class ClipRetrieval:
         Returns:
             List[Dict]: A list of dictionaries containing the retrieval results.
         """
-        vector_embedding = await self._original_clip.text_embedding(
-            text=text
+        vector_embedding = await self._original_clip.image_embedding(
+            image=image
         )
         indices = await self._faiss.original_search(
             top_k=self._top_k,
@@ -68,9 +70,9 @@ class ClipRetrieval:
         )
         return result
 
-    async def apple_text_retrieval(
+    async def apple_image_retrieval(
         self,
-        text: str
+        image: BytesIO
     ) -> List[Dict]:
         """
         Retrieves text data using the apple CLIP model.
@@ -81,8 +83,8 @@ class ClipRetrieval:
         Returns:
             List[Dict]: A list of dictionaries containing the retrieval results.
         """
-        vector_embedding = await self._apple_clip.text_embedding(
-            text=text
+        vector_embedding = await self._apple_clip.image_embedding(
+            image=image
         )
         indices = await self._faiss.apple_search(
             top_k=self._top_k,
@@ -94,9 +96,9 @@ class ClipRetrieval:
         )
         return result
 
-    async def laion_text_retrieval(
+    async def laion_image_retrieval(
         self,
-        text: str
+        image: BytesIO
     ) -> List[Dict]:
         """
         Retrieves text data using the laion CLIP model.
@@ -107,8 +109,8 @@ class ClipRetrieval:
         Returns:
             List[Dict]: A list of dictionaries containing the retrieval results.
         """
-        vector_embedding = await self._laion_clip.text_embedding(
-            text=text
+        vector_embedding = await self._laion_clip.image_embedding(
+            image=image
         )
         indices = await self._faiss.laion_search(
             top_k=self._top_k,
@@ -123,7 +125,7 @@ class ClipRetrieval:
     async def text_retrieval(
         self,
         model_type: str,
-        text: str
+        image: BytesIO
     ) -> List[Dict]:
         """
         Retrieves text data based on the specified model type.
@@ -136,12 +138,17 @@ class ClipRetrieval:
             List[Dict]: A list of dictionaries containing the retrieval results.
         """
         if model_type == "original_clip":
-            return await self.original_text_retrieval(text=text)
-        elif model_type == "apple_clip":
-            return await self.apple_text_retrieval(text=text)
-        elif model_type == "laion_clip":
-            return await self.laion_text_retrieval(text=text)
-        else:
-            return {
-                "error": "Model type not supported"
-            }
+            return await self.original_image_retrieval(
+                image=image
+            )
+        if model_type == "apple_clip":
+            return await self.apple_image_retrieval(
+                image=image
+            )
+        if model_type == "laion_clip":
+            return await self.laion_image_retrieval(
+                image=image
+            )
+        return {
+            "error": "Model type not supported"
+        }

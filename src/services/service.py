@@ -7,7 +7,9 @@ from dotenv import load_dotenv
 import torch
 from open_clip import (create_model_from_pretrained,
                        get_tokenizer)
-from transformers import CLIPProcessor, AutoTokenizer, CLIPModel
+from transformers import (CLIPProcessor,
+                          AutoTokenizer,
+                          CLIPModel)
 
 from src.utils.utility import convert_value
 from src.modules.original_clip import OriginalCLIP
@@ -15,7 +17,8 @@ from src.modules.apple_clip import AppleCLIP
 from src.modules.laion_clip import LaionCLIP
 from src.repositories.load_faiss import ClipFaiss
 from src.repositories.load_json import LoadJson
-from src.services.clip_retrieval import ClipRetrieval
+from src.services.text_clip_retrieval import TextClipRetrieval
+from src.services.image_clip_retrieval import ImageClipRetrieval
 
 load_dotenv()
 
@@ -60,9 +63,10 @@ class Service:
         self._data = LoadJson(
             json_url=json_clip
         )
-        self._device = torch.device(
-            "cuda" if torch.cuda.is_available() else "cpu"
-        )
+        # self._device = torch.device(
+        #     "cuda" if torch.cuda.is_available() else "cpu"
+        # )
+        self._device = torch.device("cpu")
         self._oc_model = CLIPModel.from_pretrained(
             original_clip_model
         ).to(self._device)
@@ -97,7 +101,15 @@ class Service:
             apple_faiss_url=apple_clip_faiss,
             laion_faiss_url=laion_clip_faiss
         )
-        self._clip_retrieval = ClipRetrieval(
+        self._text_clip_retrieval = TextClipRetrieval(
+            top_k=top_k,
+            original_clip=self._original_clip,
+            apple_clip=self._apple_clip,
+            laion_clip=self._laion_clip,
+            faiss=self._faiss,
+            data=self._data
+        )
+        self._image_clip_retrieval = ImageClipRetrieval(
             top_k=top_k,
             original_clip=self._original_clip,
             apple_clip=self._apple_clip,
@@ -107,11 +119,17 @@ class Service:
         )
 
     @property
-    def clip_retrieval(self):
+    def text_clip_retrieval(self):
         """
         Provides access to the initialized CLIP retrieval service.
 
         Returns:
             ClipRetrieval: The CLIP retrieval service instance.
         """
-        return self._clip_retrieval
+        return self._text_clip_retrieval
+
+    @property
+    def image_clip_retrieval(self):
+        """
+        """
+        return self._image_clip_retrieval
