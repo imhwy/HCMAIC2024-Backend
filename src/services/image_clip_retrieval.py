@@ -122,7 +122,7 @@ class ImageClipRetrieval:
         )
         return result
 
-    async def text_retrieval(
+    async def image_retrieval(
         self,
         model_type: str,
         image: BytesIO

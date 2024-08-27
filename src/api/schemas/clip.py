@@ -14,7 +14,7 @@ class RequestClipText(BaseModel):
     text: str
 
 
-class ResponseClipText(BaseModel):
+class ResponseClip(BaseModel):
     """
     Response schema for individual text clip.
     """
@@ -22,8 +22,8 @@ class ResponseClipText(BaseModel):
     video_id: str
 
 
-class ListResponseClipText(BaseModel):
+class ListResponseClip(BaseModel):
     """
     Response schema for a list of text clips.
     """
-    data: List[ResponseClipText]
+    data: List[ResponseClip]
