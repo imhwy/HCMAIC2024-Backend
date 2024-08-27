@@ -35,8 +35,8 @@ LAION_CLIP_TOKENIZER = "hf-hub:laion/CLIP-ViT-g-14-laion2B-s12B-b42K"
 
 
 ORIGINAL_FAISS = "/kaggle/input/faisssss/original_clip_ViT_L14.faiss"
-APPLE_FAISS = "/kaggle/input/faisssss/original_clip_ViT_L14.faiss"
-LAION_FAISS = "/kaggle/input/faisssss/original_clip_ViT_L14.faiss"
+APPLE_FAISS = "/kaggle/input/1024-embedding-faiss/apple_clip.faiss"
+LAION_FAISS = "/kaggle/input/1024-embedding-faiss/laion_clip.faiss"
 TOP_K = 500
 
 
