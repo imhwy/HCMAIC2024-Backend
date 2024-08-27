@@ -85,7 +85,7 @@ class Service:
             apple_clip_model
         )
         self._apple_model.to(self._device)
-        self._apple_model = get_tokenizer(apple_clip_tokenizer)
+        self._apple_tokenizer = get_tokenizer(apple_clip_tokenizer)
         self._laion_model, self._laion_processor = create_model_from_pretrained(
             laion_clip_model
         )
