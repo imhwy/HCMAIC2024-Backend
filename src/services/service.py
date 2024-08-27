@@ -80,8 +80,7 @@ class Service:
         self._laion_model, self._laion_processor = create_model_from_pretrained(
             laion_clip_model
         )
-        self._laion_modelbranch
-        .to(self._device)
+        self._laion_model.to(self._device)
         self._laion_tokenizer = get_tokenizer(laion_clip_tokenizer)
         self._original_clip = OriginalCLIP(
             model=self._oc_model,
