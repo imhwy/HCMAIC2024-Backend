@@ -22,16 +22,25 @@ from src.services.image_clip_retrieval import ImageClipRetrieval
 
 load_dotenv()
 
-ORIGINAL_CLIP_MODEL = convert_value(os.environ.get("ORIGINAL_CLIP_MODEL"))
-APPLE_CLIP_MODEL = convert_value(os.environ.get("APPLE_CLIP_MODEL"))
-APPLE_CLIP_TOKENIZER = convert_value(os.environ.get("APPLE_CLIP_TOKENIZER"))
-LAION_CLIP_MODEL = convert_value(os.environ.get("LAION_CLIP_MODEL"))
-LAION_CLIP_TOKENIZER = convert_value(os.environ.get("LAION_CLIP_TOKENIZER"))
-ORIGINAL_FAISS = convert_value(os.environ.get("ORIGINAL_FAISS"))
-APPLE_FAISS = convert_value(os.environ.get("APPLE_FAISS"))
-LAION_FAISS = convert_value(os.environ.get("LAION_FAISS"))
-TOP_K = convert_value(os.environ.get("TOP_K"))
-JSON_CLIP = convert_value(os.environ.get("JSON_CLIP"))
+
+ORIGINAL_CLIP_MODEL="openai/clip-vit-large-patch14"
+
+
+APPLE_CLIP_MODEL="hf-hub:apple/DFN5B-CLIP-ViT-H-14-378"
+APPLE_CLIP_TOKENIZER="ViT-H-14"
+
+
+LAION_CLIP_MODEL="hf-hub:laion/CLIP-ViT-g-14-laion2B-s12B-b42K"
+LAION_CLIP_TOKENIZER="hf-hub:laion/CLIP-ViT-g-14-laion2B-s12B-b42K"
+
+
+ORIGINAL_FAISS="/kaggle/input/faisssss/original_clip_ViT_L14.faiss"
+APPLE_FAISS="/kaggle/input/faisssss/original_clip_ViT_L14.faiss"
+LAION_FAISS="/kaggle/input/faisssss/original_clip_ViT_L14.faiss"
+TOP_K=500
+
+
+JSON_CLIP="/kaggle/input/json-file/original_clip_ViT_L14.json"
 
 
 class Service:
@@ -63,10 +72,10 @@ class Service:
         self._data = LoadJson(
             json_url=json_clip
         )
-        # self._device = torch.device(
-        #     "cuda" if torch.cuda.is_available() else "cpu"
-        # )
-        self._device = torch.device("cpu")
+        self._device = torch.device(
+            "cuda" if torch.cuda.is_available() else "cpu"
+        )
+        # self._device = torch.device("cpu")
         self._oc_model = CLIPModel.from_pretrained(
             original_clip_model
         ).to(self._device)
