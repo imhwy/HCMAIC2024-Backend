@@ -27,26 +27,26 @@ class ClipFaiss:
 
         """
         self._original_index = faiss.read_index(original_faiss_url)
-        # self._original_res = faiss.StandardGpuResources()
-        # self._original_gpu_index = faiss.index_cpu_to_gpu(
-        #     provider=self._original_res,
-        #     device=0,
-        #     index=self._original_index
-        # )
+        self._original_res = faiss.StandardGpuResources()
+        self._original_gpu_index = faiss.index_cpu_to_gpu(
+            provider=self._original_res,
+            device=0,
+            index=self._original_index
+        )
         self._apple_index = faiss.read_index(apple_faiss_url)
-        # self._apple_res = faiss.StandardGpuResources()
-        # self._apple_gpu_index = faiss.index_cpu_to_gpu(
-        #     provider=self._apple_res,
-        #     device=0,
-        #     index=self._apple_index
-        # )
+        self._apple_res = faiss.StandardGpuResources()
+        self._apple_gpu_index = faiss.index_cpu_to_gpu(
+            provider=self._apple_res,
+            device=0,
+            index=self._apple_index
+        )
         self._laion_index = faiss.read_index(laion_faiss_url)
-        # self._laion_res = faiss.StandardGpuResources()
-        # self._laion_gpu_index = faiss.index_cpu_to_gpu(
-        #     provider=self._laion_res,
-        #     device=0,
-        #     index=self._laion_index
-        # )
+        self._laion_res = faiss.StandardGpuResources()
+        self._laion_gpu_index = faiss.index_cpu_to_gpu(
+            provider=self._laion_res,
+            device=0,
+            index=self._laion_index
+        )
 
     async def original_search(
         self,
@@ -56,9 +56,9 @@ class ClipFaiss:
         """
         """
         query_vectors = query_vectors.cpu().detach().numpy()
-        _, indices = self._original_index.search(query_vectors, top_k)
+        _, indices = self._original_gpu_index.search(query_vectors, top_k)
         return indices
-    
+
     async def apple_search(
         self,
         top_k: int,
@@ -67,9 +67,9 @@ class ClipFaiss:
         """
         """
         query_vectors = query_vectors.cpu().detach().numpy()
-        _, indices = self._apple_index.search(query_vectors, top_k)
+        _, indices = self._apple_gpu_index.search(query_vectors, top_k)
         return indices
-    
+
     async def laion_search(
         self,
         top_k: int,
@@ -78,5 +78,5 @@ class ClipFaiss:
         """
         """
         query_vectors = query_vectors.cpu().detach().numpy()
-        _, indices = self._laion_index.search(query_vectors, top_k)
+        _, indices = self._laion_gpu_index.search(query_vectors, top_k)
         return indices
