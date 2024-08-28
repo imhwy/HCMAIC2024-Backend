@@ -102,7 +102,7 @@ async def search_by_image(
         image_stream = io.BytesIO(contents)
         result = await service.image_clip_retrieval.image_retrieval(
             model_type=model_type,
-            image_stream=image_stream
+            image=image_stream
         )
         return ListResponseClip(
             data=[
