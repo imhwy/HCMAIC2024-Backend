@@ -54,7 +54,7 @@ class OriginalCLIP:
         text_features = self._model.get_text_features(**inputs)
         return text_features
 
-    def image_embedding(
+    async def image_embedding(
         self,
         image
     ) -> Tensor:

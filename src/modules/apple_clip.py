@@ -9,9 +9,11 @@ from open_clip.factory import (create_model,
                                image_transform_v2,
                                get_tokenizer)
 
+
 class AppleCLIP:
     """
     """
+
     def __init__(
         self,
         model: create_model,
@@ -25,7 +27,7 @@ class AppleCLIP:
         self._processor = processor
         self._tokenizer = tokenizer
         self._device_type = device_type
-        
+
     def text_embedding(
         self,
         text: str
@@ -41,7 +43,7 @@ class AppleCLIP:
             text_features = F.normalize(text_features, dim=-1)
         return text_features
 
-    def image_embedding(
+    async def image_embedding(
         self,
         image
     ) -> Tensor:

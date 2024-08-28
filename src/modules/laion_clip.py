@@ -43,7 +43,7 @@ class LaionCLIP:
             text_features = F.normalize(text_features, dim=-1)
         return text_features
 
-    def image_embedding(
+    async def image_embedding(
         self,
         image
     ) -> Tensor:
