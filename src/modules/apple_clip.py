@@ -28,7 +28,7 @@ class AppleCLIP:
         self._tokenizer = tokenizer
         self._device_type = device_type
 
-    def text_embedding(
+    async def text_embedding(
         self,
         text: str
     ) -> Tensor:
