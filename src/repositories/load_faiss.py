@@ -30,21 +30,21 @@ class ClipFaiss:
         self._original_res = faiss.StandardGpuResources()
         self._original_gpu_index = faiss.index_cpu_to_gpu(
             provider=self._original_res,
-            device=0,
+            device=1,
             index=self._original_index
         )
         self._apple_index = faiss.read_index(apple_faiss_url)
         self._apple_res = faiss.StandardGpuResources()
         self._apple_gpu_index = faiss.index_cpu_to_gpu(
             provider=self._apple_res,
-            device=0,
+            device=1,
             index=self._apple_index
         )
         self._laion_index = faiss.read_index(laion_faiss_url)
         self._laion_res = faiss.StandardGpuResources()
         self._laion_gpu_index = faiss.index_cpu_to_gpu(
             provider=self._laion_res,
-            device=0,
+            device=1,
             index=self._laion_index
         )
 
