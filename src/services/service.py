@@ -2,7 +2,7 @@
 Service class for initializing and managing the CLIP retrieval system.
 """
 
-import os
+# import os
 from dotenv import load_dotenv
 import torch
 from open_clip import (create_model_from_pretrained,
@@ -11,7 +11,7 @@ from transformers import (CLIPProcessor,
                           AutoTokenizer,
                           CLIPModel)
 
-from src.utils.utility import convert_value
+# from src.utils.utility import convert_value
 from src.modules.original_clip import OriginalCLIP
 from src.modules.apple_clip import AppleCLIP
 from src.modules.laion_clip import LaionCLIP
@@ -24,22 +24,14 @@ load_dotenv()
 
 
 ORIGINAL_CLIP_MODEL = "openai/clip-vit-large-patch14"
-
-
 APPLE_CLIP_MODEL = "hf-hub:apple/DFN5B-CLIP-ViT-H-14-378"
 APPLE_CLIP_TOKENIZER = "ViT-H-14"
-
-
 LAION_CLIP_MODEL = "hf-hub:laion/CLIP-ViT-g-14-laion2B-s12B-b42K"
 LAION_CLIP_TOKENIZER = "hf-hub:laion/CLIP-ViT-g-14-laion2B-s12B-b42K"
-
-
 ORIGINAL_FAISS = "/kaggle/input/faisssss/original_clip_ViT_L14.faiss"
 APPLE_FAISS = "/kaggle/input/1024-embedding-faiss/apple_clip.faiss"
 LAION_FAISS = "/kaggle/input/1024-embedding-faiss/laion_clip.faiss"
 TOP_K = 500
-
-
 JSON_CLIP = "/kaggle/input/json-file/original_clip_ViT_L14.json"
 
 

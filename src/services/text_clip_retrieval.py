@@ -136,11 +136,17 @@ class TextClipRetrieval:
             List[Dict]: A list of dictionaries containing the retrieval results.
         """
         if model_type == "original_clip":
-            return await self.original_text_retrieval(text=text)
+            return await self.original_text_retrieval(
+                text=text
+            )
         elif model_type == "apple_clip":
-            return await self.apple_text_retrieval(text=text)
+            return await self.apple_text_retrieval(
+                text=text
+            )
         elif model_type == "laion_clip":
-            return await self.laion_text_retrieval(text=text)
+            return await self.laion_text_retrieval(
+                text=text
+            )
         else:
             return {
                 "error": "Model type not supported"

@@ -35,7 +35,7 @@ class AppleCLIP:
         text = self._tokenizer(
             text,
             context_length=self._model.context_length
-        )
+        ).to(self._device_type)
         with torch.no_grad(), torch.cuda.amp.autocast():
             text_features = self._model.encode_text(text)
             text_features = F.normalize(text_features, dim=-1)
