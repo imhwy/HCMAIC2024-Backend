@@ -2,8 +2,8 @@
 Implements a FAISS-based search for CLIP embeddings.
 """
 
-import faiss
 from typing import List
+import faiss
 from torch import Tensor
 
 
@@ -54,6 +54,14 @@ class ClipFaiss:
         query_vectors: Tensor
     ) -> List[int]:
         """
+        Searches the original FAISS index for the top-k nearest neighbors.
+
+        Args:
+            top_k (int): The number of nearest neighbors to retrieve.
+            query_vectors (Tensor): The query vectors to search against the index.
+
+        Returns:
+            List[int]: A list of indices of the top-k nearest neighbors.
         """
         query_vectors = query_vectors.cpu().detach().numpy()
         _, indices = self._original_gpu_index.search(query_vectors, top_k)
@@ -65,6 +73,14 @@ class ClipFaiss:
         query_vectors: Tensor
     ) -> List[int]:
         """
+        Searches the Apple FAISS index for the top-k nearest neighbors.
+
+        Args:
+            top_k (int): The number of nearest neighbors to retrieve.
+            query_vectors (Tensor): The query vectors to search against the index.
+
+        Returns:
+            List[int]: A list of indices of the top-k nearest neighbors.
         """
         query_vectors = query_vectors.cpu().detach().numpy()
         _, indices = self._apple_gpu_index.search(query_vectors, top_k)
@@ -76,6 +92,14 @@ class ClipFaiss:
         query_vectors: Tensor
     ) -> List[int]:
         """
+        Searches the LAION FAISS index for the top-k nearest neighbors.
+
+        Args:
+            top_k (int): The number of nearest neighbors to retrieve.
+            query_vectors (Tensor): The query vectors to search against the index.
+
+        Returns:
+            List[int]: A list of indices of the top-k nearest neighbors.
         """
         query_vectors = query_vectors.cpu().detach().numpy()
         _, indices = self._laion_gpu_index.search(query_vectors, top_k)

@@ -24,6 +24,15 @@ class TextClipRetrieval:
         data: Dict
     ) -> None:
         """
+        Initializes the ClipSearch class with the given CLIP models, FAISS index, and data.
+
+        Args:
+            top_k (int): The number of top results to retrieve.
+            original_clip (OriginalCLIP): An instance of the OriginalCLIP model.
+            apple_clip (AppleCLIP): An instance of the AppleCLIP model.
+            laion_clip (LaionCLIP): An instance of the LaionCLIP model.
+            faiss (ClipFaiss): An instance of the ClipFaiss class for performing FAISS.
+            data (Dict): A dictionary mapping indices to video and frame information.
         """
         self._top_k = top_k
         self._original_clip = original_clip
@@ -38,6 +47,15 @@ class TextClipRetrieval:
         indices: List[int]
     ) -> List:
         """
+        Maps the search results (indices) to the corresponding video and frame information.
+
+        Args:
+            data (Dict): A dictionary mapping indices to video and frame information.
+            indices (List[int]): A list of indices retrieved from the FAISS search.
+
+        Returns:
+            List: A list of mapped results containing video 
+            and frame information for the given indices.
         """
         filtered_list = [data[indice] for indice in indices if indice in data]
         return filtered_list

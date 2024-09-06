@@ -15,6 +15,10 @@ class LoadJson:
         json_url: str
     ) -> None:
         """
+        Initializes the LoadJson class by loading the JSON data and creating a mapping.
+
+        Args:
+            json_url (str): The path to the JSON file containing the data.
         """
         with open(json_url, "r", encoding="utf-8") as f:
             self._mapping = json.load(f)

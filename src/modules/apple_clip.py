@@ -1,4 +1,5 @@
 """
+This module is used for Apple CLIP model-based text and image embedding.
 """
 
 import torch
@@ -12,6 +13,8 @@ from open_clip.factory import (create_model,
 
 class AppleCLIP:
     """
+    A class for handling text and image embeddings using a CLIP model.
+    Provides methods to generate embeddings for text and images.
     """
 
     def __init__(
@@ -22,6 +25,13 @@ class AppleCLIP:
         device_type: device
     ) -> None:
         """
+        Initialize the AppleCLIP class.
+
+        Args:
+            model (create_model): The CLIP model to be used for encoding.
+            processor (image_transform_v2): The image transformation function.
+            tokenizer (get_tokenizer): The tokenizer for processing text inputs.
+            device_type (device): The device on which the model will run (e.g., CPU or GPU).
         """
         self._model = model
         self._processor = processor
@@ -33,6 +43,13 @@ class AppleCLIP:
         text: str
     ) -> Tensor:
         """
+        Generate a text embedding using the CLIP model.
+
+        Args:
+            text (str): The input text to be encoded.
+
+        Returns:
+            Tensor: The normalized text embedding as a PyTorch tensor.
         """
         text = self._tokenizer(
             text,
@@ -48,6 +65,13 @@ class AppleCLIP:
         image
     ) -> Tensor:
         """
+        Generate an image embedding using the CLIP model.
+
+        Args:
+            image: The input image file (path or file-like object) to be encoded.
+
+        Returns:
+            Tensor: The normalized image embedding as a PyTorch tensor.
         """
         image = Image.open(image).convert("RGB")
         image = self._processor(image).unsqueeze(0).to(self._device_type)

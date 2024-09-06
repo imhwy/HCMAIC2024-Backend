@@ -26,6 +26,15 @@ class ImageClipRetrieval:
         data: Dict
     ) -> None:
         """
+        Initializes the ClipSearch class with the provided CLIP models, FAISS index, and data.
+
+        Args:
+            top_k (int): The number of top search results to return.
+            original_clip (OriginalCLIP): An instance of the OriginalCLIP model.
+            apple_clip (AppleCLIP): An instance of the AppleCLIP model for generating embeddings.
+            laion_clip (LaionCLIP): An instance of the LaionCLIP model for generating embeddings.
+            faiss (ClipFaiss): An instance of the ClipFaiss class for performing FAISS
+            data (Dict): A dictionary mapping indices to video and frame information.
         """
         self._top_k = top_k
         self._original_clip = original_clip
@@ -40,6 +49,14 @@ class ImageClipRetrieval:
         indices: List[int]
     ) -> List:
         """
+        Maps the search result indices to the corresponding data entries.
+
+        Args:
+            data (Dict): A dictionary where keys are indices and values are associated data.
+            indices (List[int]): A list of indices retrieved from a search operation.
+
+        Returns:
+            List: A list of data entries corresponding to the indices.
         """
         filtered_list = [data[indice] for indice in indices if indice in data]
         return filtered_list
