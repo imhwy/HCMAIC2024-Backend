@@ -3,7 +3,6 @@ This module defines a FastAPI router for handling clip text retrieval requests.
 """
 
 import io
-import time
 from fastapi import (status,
                      Depends,
                      APIRouter,
@@ -52,13 +51,10 @@ async def clip_text_retrieval(
             detail="Query is required"
         )
     try:
-        a = time.time()
         result = await service.text_clip_retrieval.text_retrieval(
             model_type=request.model_type,
             text=request.text
         )
-        b = time.time()
-        print(b-a)
         return ListResponseClip(
             data=[
                 ResponseClip(**record) for record in result

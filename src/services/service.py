@@ -28,11 +28,11 @@ APPLE_CLIP_MODEL = "hf-hub:apple/DFN5B-CLIP-ViT-H-14-378"
 APPLE_CLIP_TOKENIZER = "ViT-H-14"
 LAION_CLIP_MODEL = "hf-hub:laion/CLIP-ViT-g-14-laion2B-s12B-b42K"
 LAION_CLIP_TOKENIZER = "hf-hub:laion/CLIP-ViT-g-14-laion2B-s12B-b42K"
-ORIGINAL_FAISS = "/kaggle/input/faisssss/original_clip_ViT_L14.faiss"
-APPLE_FAISS = "/kaggle/input/1024-embedding-faiss/apple_clip.faiss"
-LAION_FAISS = "/kaggle/input/1024-embedding-faiss/laion_clip.faiss"
+ORIGINAL_FAISS = "/kaggle/input/faiss_database/original_clip.faiss"
+APPLE_FAISS = "/kaggle/input/faiss_database/apple_clip.faiss"
+LAION_FAISS = "/kaggle/input/faiss_database/laion_clip.faiss"
+JSON_CLIP = "/kaggle/input/json_file/clip.json"
 TOP_K = 500
-JSON_CLIP = "/kaggle/input/json-file/original_clip_ViT_L14.json"
 
 
 class Service:
@@ -136,5 +136,9 @@ class Service:
     @property
     def image_clip_retrieval(self):
         """
+        Provides access to the initialized CLIP retrieval service.
+
+        Returns:
+            ClipRetrieval: The CLIP retrieval service instance.
         """
         return self._image_clip_retrieval
