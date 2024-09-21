@@ -3,6 +3,7 @@ This module defines a FastAPI router for handling clip text retrieval requests.
 """
 
 import io
+import time
 from fastapi import (status,
                      Depends,
                      APIRouter,
@@ -130,14 +131,12 @@ async def multi_event_search(
             detail="List of events is required"
         )
     try:
-        import time
         a = time.time()
         result = await service.multi_event_retrieval.multi_event_search(
             model_type=request.model_type,
             list_event=request.list_event
         )
         print(time.time() - a)
-        print(f"result is: {result}")
         return ListResponseClip(
             data=[
                 ResponseClip(**record) for record in result
