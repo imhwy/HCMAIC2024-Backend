@@ -57,7 +57,7 @@ class MultiEventRetrieval:
             data=self._data,
             indices=indices[0]
         )
-        return result    
+        return result
 
     async def apple_text_retrieval(
         self,
@@ -137,7 +137,8 @@ class MultiEventRetrieval:
                     for d in lst:
                         if d[field] == value:
                             common_elements.append(d)
-        return common_elements
+        half_size = len(common_elements) // 2
+        return common_elements[:half_size]
 
     async def multi_event_search(
         self,

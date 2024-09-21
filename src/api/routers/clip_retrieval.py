@@ -112,6 +112,7 @@ async def search_by_image(
             detail=str(e)
         ) from e
 
+
 @clip_router.post(
     "/multiEventSearch",
     status_code=status.HTTP_200_OK,
