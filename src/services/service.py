@@ -19,6 +19,7 @@ from src.repositories.load_faiss import ClipFaiss
 from src.repositories.load_json import LoadJson
 from src.services.text_clip_retrieval import TextClipRetrieval
 from src.services.image_clip_retrieval import ImageClipRetrieval
+from src.services.multi_event_retrieval import MultiEventRetrieval
 
 load_dotenv()
 
@@ -122,6 +123,14 @@ class Service:
             faiss=self._faiss,
             data=self._data
         )
+        self._multi_event_retrieval = MultiEventRetrieval(
+            top_k=top_k,
+            original_clip=self._original_clip,
+            apple_clip=self._apple_clip,
+            laion_clip=self._laion_clip,
+            faiss=self._faiss,
+            data=self._data
+        )
 
     @property
     def text_clip_retrieval(self):
@@ -142,3 +151,13 @@ class Service:
             ClipRetrieval: The CLIP retrieval service instance.
         """
         return self._image_clip_retrieval
+
+    @property
+    def multi_event_retrieval(self):
+        """
+        Provides access to the initialized CLIP retrieval service.
+
+        Returns:
+            ClipRetrieval: The CLIP retrieval service instance.
+        """
+        return self._multi_event_retrieval

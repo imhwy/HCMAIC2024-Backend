@@ -27,3 +27,9 @@ class ListResponseClip(BaseModel):
     Response schema for a list of text clips.
     """
     data: List[ResponseClip]
+
+class MultiEventRequest(BaseModel):
+    """
+    """
+    model_type: str
+    list_event: List[str]

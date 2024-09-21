@@ -12,7 +12,8 @@ from fastapi import (status,
 
 from src.api.schemas.clip import (RequestClipText,
                                   ResponseClip,
-                                  ListResponseClip)
+                                  ListResponseClip,
+                                  MultiEventRequest)
 from src.services.service import Service
 from src.api.dependencies.dependency import get_service
 
@@ -110,3 +111,38 @@ async def search_by_image(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=str(e)
         ) from e
+
+@clip_router.post(
+    "/multiEventSearch",
+    status_code=status.HTTP_200_OK,
+    response_model=ListResponseClip
+)
+async def multi_event_search(
+    request: MultiEventRequest,
+    service: Service = Depends(get_service)
+) -> ListResponseClip:
+    """
+    """
+    if not request.list_event:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="List of events is required"
+        )
+    try:
+        import time
+        a = time.time()
+        result = await service.multi_event_retrieval.multi_event_search(
+            model_type=request.model_type,
+            list_event=request.list_event
+        )
+        print(time.time() - a)
+        print(f"result is: {result}")
+        return ListResponseClip(
+            data=[
+                ResponseClip(**record) for record in result
+            ]
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)) from e
