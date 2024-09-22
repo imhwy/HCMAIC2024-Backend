@@ -41,12 +41,12 @@ class ClipFaiss:
             index=self._apple_index
         )
         self._laion_index = faiss.read_index(laion_faiss_url)
-        self._laion_res = faiss.StandardGpuResources()
-        self._laion_gpu_index = faiss.index_cpu_to_gpu(
-            provider=self._laion_res,
-            device=1,
-            index=self._laion_index
-        )
+        # self._laion_res = faiss.StandardGpuResources()
+        # self._laion_gpu_index = faiss.index_cpu_to_gpu(
+        #     provider=self._laion_res,
+        #     device=1,
+        #     index=self._laion_index
+        # )
 
     async def original_search(
         self,
@@ -102,5 +102,5 @@ class ClipFaiss:
             List[int]: A list of indices of the top-k nearest neighbors.
         """
         query_vectors = query_vectors.cpu().detach().numpy()
-        _, indices = self._laion_gpu_index.search(query_vectors, top_k)
+        _, indices = self._laion_index.search(query_vectors, top_k)
         return indices
