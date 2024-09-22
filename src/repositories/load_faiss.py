@@ -27,12 +27,12 @@ class ClipFaiss:
 
         """
         self._original_index = faiss.read_index(original_faiss_url)
-        self._original_res = faiss.StandardGpuResources()
-        self._original_gpu_index = faiss.index_cpu_to_gpu(
-            provider=self._original_res,
-            device=1,
-            index=self._original_index
-        )
+        # self._original_res = faiss.StandardGpuResources()
+        # self._original_gpu_index = faiss.index_cpu_to_gpu(
+        #     provider=self._original_res,
+        #     device=1,
+        #     index=self._original_index
+        # )
         self._apple_index = faiss.read_index(apple_faiss_url)
         self._apple_res = faiss.StandardGpuResources()
         self._apple_gpu_index = faiss.index_cpu_to_gpu(
@@ -64,7 +64,7 @@ class ClipFaiss:
             List[int]: A list of indices of the top-k nearest neighbors.
         """
         query_vectors = query_vectors.cpu().detach().numpy()
-        _, indices = self._original_gpu_index.search(query_vectors, top_k)
+        _, indices = self._original_index.search(query_vectors, top_k)
         return indices
 
     async def apple_search(
