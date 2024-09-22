@@ -29,10 +29,10 @@ APPLE_CLIP_MODEL = "hf-hub:apple/DFN5B-CLIP-ViT-H-14-378"
 APPLE_CLIP_TOKENIZER = "ViT-H-14"
 LAION_CLIP_MODEL = "hf-hub:laion/CLIP-ViT-g-14-laion2B-s12B-b42K"
 LAION_CLIP_TOKENIZER = "hf-hub:laion/CLIP-ViT-g-14-laion2B-s12B-b42K"
-ORIGINAL_FAISS = "/kaggle/input/faiss-database/original_clip.faiss"
-APPLE_FAISS = "/kaggle/input/faiss-database/apple_clip.faiss"
-LAION_FAISS = "/kaggle/input/faiss-database/laion_clip.faiss"
-JSON_CLIP = "/kaggle/input/json-file/clip.json"
+ORIGINAL_FAISS = "/kaggle/input/original-clip/original_clip_ViT_L14.faiss"
+APPLE_FAISS = "/kaggle/input/apple-clip/apple.faiss"
+LAION_FAISS = "/kaggle/input/laion-clip/laion_clip.faiss"
+JSON_CLIP = "/kaggle/input/json-clip/clip.json"
 TOP_K = 500
 
 
