@@ -125,18 +125,34 @@ class MultiEventRetrieval:
         self,
         list_event: List[Dict],
         field: str = "video_id",
+        frame_field: str = "frame_id"
     ) -> List[Dict]:
         """
+        Find objects with the same video_id and ensure the frame_id (as a string) 
+        increases across lists.
         """
         base_list = list_event[0]
         common_elements = []
+
+        def extract_frame_number(frame_id: str) -> int:
+            return int(frame_id.split('.')[0])
         for item in base_list:
-            value = item[field]
-            if all(any(d[field] == value for d in lst) for lst in list_event[1:]):
+            video_id_value = item[field]
+            frame_id_value = extract_frame_number(item[frame_field])
+            if all(
+                any(
+                    d[field] == video_id_value and extract_frame_number(
+                        d[frame_field]) > frame_id_value
+                    for d in lst
+                ) for lst in list_event[1:]
+            ):
                 for _, lst in enumerate(list_event):
                     for d in lst:
-                        if d[field] == value:
+                        if d[field] == video_id_value:
                             common_elements.append(d)
+                            frame_id_value = extract_frame_number(
+                                d[frame_field])
+
         half_size = len(common_elements) // 2
         return common_elements[:half_size]
 
