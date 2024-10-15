@@ -242,12 +242,12 @@ class MultiEventRetrieval:
     ) -> List[Dict]:
         """
         """
+        combine = []
         result_clip = await self.text_retrieval(
             model_type=model_type,
             text=text
         )
         if list_asr and list_ocr:
-            combine = []
             for item in priority:
                 if item == 'asr':
                     combine.extend(list_asr)

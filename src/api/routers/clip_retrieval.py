@@ -171,7 +171,7 @@ async def multi_modal_search(
             detail="there is no features"
         )
 
-    if count_non_empty_fields(request.text, request.list_ocr, request.list_asr) < 1:
+    if count_non_empty_fields(request.text, request.list_ocr, request.list_asr) < 2:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="at least 2 in 3 fields are required"
