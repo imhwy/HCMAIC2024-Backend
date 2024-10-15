@@ -1,7 +1,7 @@
 """
 This module defines a FastAPI router for handling clip text retrieval requests.
 """
-
+import copy
 import io
 import time
 from fastapi import (status,
@@ -14,9 +14,11 @@ from fastapi import (status,
 from src.api.schemas.clip import (RequestClipText,
                                   ResponseClip,
                                   ListResponseClip,
-                                  MultiEventRequest)
+                                  MultiEventRequest,
+                                  MultiModalResquest)
 from src.services.service import Service
 from src.api.dependencies.dependency import get_service
+from src.utils.utility import count_non_empty_fields
 
 
 clip_router = APIRouter(
@@ -146,6 +148,73 @@ async def multi_event_search(
                 ResponseClip(**record) for record in result
             ]
         )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)) from e
+
+
+@clip_router.post(
+    "/multiModalSearch",
+    status_code=status.HTTP_200_OK,
+    response_model=ListResponseClip
+)
+async def multi_modal_search(
+    request: MultiModalResquest,
+    service: Service = Depends(get_service)
+) -> ListResponseClip:
+    """
+    """
+    if not request.list_ocr and not request.list_asr and not request.list_ocr:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="there is no features"
+        )
+
+    if count_non_empty_fields(request.text, request.list_ocr, request.list_asr) < 1:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="at least 2 in 3 fields are required"
+        )
+
+    try:
+        list_ocr = [
+            dict(
+                obj, frame_id=f"{obj['frame_id']}.jpg"
+            ) for obj in request.list_ocr
+        ]
+        list_asr = [
+            dict(
+                obj, frame_id=f"{obj['frame_id']}.jpg"
+            ) for obj in request.list_asr
+        ]
+
+        if not request.text:
+            result = await service.multi_event_retrieval.multi_event_search_with_non_text(
+                list_ocr=list_ocr,
+                list_asr=list_asr,
+                priority=request.priority
+            )
+            return ListResponseClip(
+                data=[
+                    ResponseClip(**record) for record in result
+                ]
+            )
+
+        if request.text:
+            result = await service.multi_event_retrieval.multi_modal_search(
+                model_type=request.model_type,
+                text=request.text,
+                list_ocr=request.list_ocr,
+                list_asr=request.list_asr,
+                priority=request.priority
+            )
+            return ListResponseClip(
+                data=[
+                    ResponseClip(**record) for record in result
+                ]
+            )
+
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

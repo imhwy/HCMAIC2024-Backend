@@ -2,6 +2,7 @@
 This script is used for utility functions
 """
 import json
+from typing import List, Dict
 
 
 def convert_value(value):
@@ -32,3 +33,14 @@ def convert_value(value):
     except (ValueError, json.JSONDecodeError):
         pass
     return value
+
+def count_non_empty_fields(test: str, list_ocr: List[Dict], list_asr: List[Dict]) -> int:
+    # Đếm số lượng field không rỗng
+    count = 0
+    if test.strip():  # kiểm tra test không rỗng và không chứa toàn khoảng trắng
+        count += 1
+    if list_ocr:  # kiểm tra list_ocr không phải là danh sách rỗng
+        count += 1
+    if list_asr:  # kiểm tra list_asr không phải là danh sách rỗng
+        count += 1
+    return count

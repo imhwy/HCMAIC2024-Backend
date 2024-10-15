@@ -2,7 +2,8 @@
 Schemas for clip text retrieval API.
 """
 
-from typing import List
+from typing import (List,
+                    Dict)
 from pydantic import BaseModel
 
 
@@ -33,3 +34,12 @@ class MultiEventRequest(BaseModel):
     """
     model_type: str
     list_event: List[str]
+
+class MultiModalResquest(BaseModel):
+    """
+    """
+    model_type: str
+    text: str
+    list_ocr: List[Dict]
+    list_asr: List[Dict]
+    priority: List[str]

@@ -1,7 +1,7 @@
 """
 """
 
-from typing import List, Dict
+from typing import List, Dict, Union
 from src.modules.original_clip import OriginalCLIP
 from src.modules.apple_clip import AppleCLIP
 from src.modules.laion_clip import LaionCLIP
@@ -178,3 +178,109 @@ class MultiEventRetrieval:
             field="video_id"
         )
         return result
+
+    async def prioritize_results(
+        self,
+        result: List[Dict],
+        list_ocr: List[Dict],
+        list_asr: List[Dict],
+        priority: List[str]
+    ) -> List[Dict]:
+        """
+        Prioritize results based on provided priority.
+        """
+        prioritized_results = []
+        for item in priority:
+            if item == 'asr':
+                prioritized_results.extend(
+                    [
+                        r for r in result if r in list_asr
+                    ]
+                )
+            elif item == 'ocr':
+                prioritized_results.extend(
+                    [
+                        r for r in result if r in list_ocr
+                    ]
+                )
+            elif item == 'clip':
+                prioritized_results.extend(
+                    [
+                        r for r in result if r in result
+                    ]
+                )
+        return prioritized_results
+
+    async def multi_event_search_with_non_text(
+        self,
+        list_ocr: Union[List[Dict], None] = None,
+        list_asr: Union[List[Dict], None] = None,
+        priority: Union[List[str], None] = None
+    ) -> List[Dict]:
+        """
+        """
+        ocr_set = {tuple(item.items()) for item in list_ocr}
+        asr_set = {tuple(item.items()) for item in list_asr}
+        intersection = ocr_set.intersection(asr_set)
+        result = [dict(item) for item in intersection]
+
+        prioritized_results = await self.prioritize_results(
+            result=result,
+            list_ocr=list_ocr,
+            list_asr=list_asr,
+            priority=priority
+        )
+        return prioritized_results
+
+    async def multi_modal_search(
+        self,
+        model_type: str = "apple_clip",
+        text: str = None,
+        list_ocr: Union[List[Dict], None] = None,
+        list_asr: Union[List[Dict], None] = None,
+        priority: Union[List[str], None] = None
+    ) -> List[Dict]:
+        """
+        """
+        result_clip = await self.text_retrieval(
+            model_type=model_type,
+            text=text
+        )
+        if list_asr and list_ocr:
+            combine = []
+            for item in priority:
+                if item == 'asr':
+                    combine.extend(list_asr)
+                elif item == 'ocr':
+                    combine.extend(list_ocr)
+                elif item == 'clip':
+                    combine.extend(result_clip)
+            result = await self.find_common_elements_by_field(
+                list_event=combine,
+                field="video_id"
+            )
+            return result
+        elif list_asr:
+            for item in priority:
+                if item == 'asr':
+                    combine.extend(list_asr)
+                elif item == 'clip':
+                    combine.extend(result_clip)
+            result = await self.find_common_elements_by_field(
+                list_event=combine,
+                field="video_id"
+            )
+            return result
+        elif list_ocr:
+            for item in priority:
+                if item == 'ocr':
+                    combine.extend(list_ocr)
+                elif item == 'clip':
+                    combine.extend(result_clip)
+            result = await self.find_common_elements_by_field(
+                list_event=combine,
+                field="video_id"
+            )
+            return result
+        else:
+            return []
