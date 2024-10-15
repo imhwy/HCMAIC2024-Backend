@@ -266,10 +266,12 @@ class MultiEventRetrieval:
                     combine.extend(list_asr)
                 elif item == 'clip':
                     combine.extend(result_clip)
+            print("pass cluster")
             result = await self.find_common_elements_by_field(
                 list_event=combine,
                 field="video_id"
             )
+            print("pass cluster 2")
             return result
         elif list_ocr:
             for item in priority:
