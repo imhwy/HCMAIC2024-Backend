@@ -250,11 +250,11 @@ class MultiEventRetrieval:
         if list_asr and list_ocr:
             for item in priority:
                 if item == 'asr':
-                    combine.extend(list_asr)
+                    combine.append(list_asr)
                 elif item == 'ocr':
-                    combine.extend(list_ocr)
+                    combine.append(list_ocr)
                 elif item == 'clip':
-                    combine.extend(result_clip)
+                    combine.append(result_clip)
             result = await self.find_common_elements_by_field(
                 list_event=combine,
                 field="video_id"
@@ -263,9 +263,9 @@ class MultiEventRetrieval:
         elif list_asr:
             for item in priority:
                 if item == 'asr':
-                    combine.extend(list_asr)
+                    combine.append(list_asr)
                 elif item == 'clip':
-                    combine.extend(result_clip)
+                    combine.append(result_clip)
             print("pass cluster")
             result = await self.find_common_elements_by_field(
                 list_event=combine,
@@ -276,9 +276,9 @@ class MultiEventRetrieval:
         elif list_ocr:
             for item in priority:
                 if item == 'ocr':
-                    combine.extend(list_ocr)
+                    combine.append(list_ocr)
                 elif item == 'clip':
-                    combine.extend(result_clip)
+                    combine.append(result_clip)
             result = await self.find_common_elements_by_field(
                 list_event=combine,
                 field="video_id"
