@@ -128,33 +128,38 @@ class MultiEventRetrieval:
         frame_field: str = "frame_id"
     ) -> List[Dict]:
         """
-        Find objects with the same video_id and ensure the frame_id (as a string) 
-        increases across lists.
+        Tìm các đối tượng có cùng giá trị video_id trong list đầu tiên và xuất hiện trong n-1 list còn lại.
+        Chỉ thêm vào danh sách kết quả nếu phần tử có mặt trong tất cả các danh sách còn lại.
         """
-        base_list = list_event[0]
+        base_list = list_event[0]  # Danh sách cơ sở (list đầu tiên)
         common_elements = []
 
         def extract_frame_number(frame_id: str) -> int:
+            """Chuyển frame_id thành số nguyên để so sánh."""
             return int(frame_id.split('.')[0])
+
         for item in base_list:
-            video_id_value = item[field]
-            frame_id_value = extract_frame_number(item[frame_field])
-            if all(
+            video_id_value = item[field]  # Lấy video_id từ phần tử hiện tại
+            frame_id_value = extract_frame_number(
+                item[frame_field])  # Lấy frame_id dưới dạng số nguyên
+
+            # Kiểm tra xem phần tử hiện tại có trong tất cả các list khác không
+            in_all_other_lists = all(
                 any(
                     d[field] == video_id_value and extract_frame_number(
                         d[frame_field]) > frame_id_value
                     for d in lst
-                ) for lst in list_event[1:]
-            ):
-                for _, lst in enumerate(list_event):
-                    for d in lst:
-                        if d[field] == video_id_value:
-                            common_elements.append(d)
-                            frame_id_value = extract_frame_number(
-                                d[frame_field])
+                )
+                for lst in list_event[1:]
+            )
 
-        half_size = len(common_elements) // 2
-        return common_elements[:half_size]
+            # Chỉ thêm phần tử vào danh sách kết quả nếu nó có mặt trong tất cả các danh sách khác
+            if in_all_other_lists:
+                common_elements.append(item)
+
+        # Giới hạn kết quả trả về (nếu cần thiết)
+        half_size = len(common_elements) // 100
+        return common_elements[:half_size] if half_size > 0 else common_elements
 
     async def multi_event_search(
         self,

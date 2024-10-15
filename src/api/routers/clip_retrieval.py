@@ -53,10 +53,12 @@ async def clip_text_retrieval(
             detail="Query is required"
         )
     try:
+        a = time.time()
         result = await service.text_clip_retrieval.text_retrieval(
             model_type=request.model_type,
             text=request.text
         )
+        print(time.time() - a)
         return ListResponseClip(
             data=[
                 ResponseClip(**record) for record in result
@@ -96,12 +98,14 @@ async def search_by_image(
             detail="Image is required"
         )
     try:
+        a = time.time()
         contents = await file.read()
         image_stream = io.BytesIO(contents)
         result = await service.image_clip_retrieval.image_retrieval(
             model_type=model_type,
             image=image_stream
         )
+        print(time.time() - a)
         return ListResponseClip(
             data=[
                 ResponseClip(**record)for record in result

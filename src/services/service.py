@@ -33,7 +33,7 @@ ORIGINAL_FAISS = "/kaggle/input/original-clip/original_clip_ViT_L14.faiss"
 APPLE_FAISS = "/kaggle/input/apple-clip/apple.faiss"
 LAION_FAISS = "/kaggle/input/laion-clip/laion.faiss"
 JSON_CLIP = "/kaggle/input/json-clip/clip.json"
-TOP_K = 500
+TOP_K = 1500
 
 
 class Service:
